@@ -598,13 +598,11 @@ stateDiagram-v2
     RandomTesting --> CoverageAnalysis
     
     state Planning {
-        direction LR
         DefineRequirements --> CreateVerificationPlan
         CreateVerificationPlan --> DefineMetrics
     }
     
     state Development {
-        direction TB
         Interfaces --> BaseComponents
         BaseComponents --> Agents
         Agents --> Environment
@@ -612,19 +610,16 @@ stateDiagram-v2
     }
     
     state BasicTesting {
-        direction LR
         RegisterTests --> FIFOTests
         FIFOTests --> BasicProtocolTests
     }
     
     state RandomTesting {
-        direction LR
         ConstrainedRandom --> StressTests
         StressTests --> ErrorTests
     }
     
     state CoverageAnalysis {
-        direction TB
         CodeCoverage --> FunctionalCoverage
         FunctionalCoverage --> IdentifyGaps
         IdentifyGaps --> CreateAdditionalTests
@@ -748,19 +743,20 @@ stateDiagram-v2
 ### 11.1 Risk Assessment Matrix
 
 ```mermaid
-quadrantChart
-    title Risk Assessment Matrix
-    x-axis Low --> High (Likelihood)
-    y-axis Low --> High (Impact)
-    quadrant-1 High Impact, Low Likelihood
-    quadrant-2 High Impact, High Likelihood
-    quadrant-3 Low Impact, Low Likelihood
-    quadrant-4 Low Impact, High Likelihood
-    "Performance issues under load": [0.3, 0.6]
-    "Simulation performance bottlenecks": [0.5, 0.5]
-    "Incomplete feature coverage": [0.5, 0.9]
-    "Complex corner cases missed": [0.5, 0.8]
-    "Schedule delays": [0.6, 0.7]
+graph TD
+    subgraph "High Impact, Low Likelihood"
+        D["Performance issues under load (0.3,0.6)"]
+    end
+    
+    subgraph "High Impact, High Likelihood"
+        A["Incomplete feature coverage (0.5,0.9)"]
+        B["Complex corner cases missed (0.5,0.8)"]
+        E["Schedule delays (0.6,0.7)"]
+    end
+    
+    subgraph "Low Impact, Medium Likelihood"
+        C["Simulation performance bottlenecks (0.5,0.5)"]
+    end
 ```
 
 | Risk | Impact | Likelihood | Mitigation |
