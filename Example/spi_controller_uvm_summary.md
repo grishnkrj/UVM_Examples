@@ -4,7 +4,7 @@ This document provides a summary of the UVM verification framework implemented f
 
 ## Verification Architecture
 
-![UVM Architecture](/Advanced_SPI_Controller/img/arch.jpg)
+![UVM Architecture](/img/arch.jpg)
 
 The verification architecture follows the standard UVM methodology with the following key components:
 
