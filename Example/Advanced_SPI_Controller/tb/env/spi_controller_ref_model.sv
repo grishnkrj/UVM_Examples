@@ -339,6 +339,16 @@ class spi_controller_ref_model extends uvm_component;
     protected virtual function void update_interrupt();
         // Mask interrupt status with enables
         bit [31:0] masked_ints = intr_stat_reg & intr_en_reg;
+        
+        // Generate interrupt if any enabled status bit is set
+        // In a real implementation, this would drive the irq output
+        // For the reference model, we just track the state
+        bit irq_state = (|masked_ints) ? 1'b1 : 1'b0;
+        
+        // Log interrupt state changes for debug
+        if (irq_state)
+            `uvm_info(get_type_name(), $sformatf("Interrupt asserted: status=0x%08h, enable=0x%08h", 
+                                                intr_stat_reg, intr_en_reg), UVM_HIGH)
     endfunction
     
 endclass : spi_controller_ref_model

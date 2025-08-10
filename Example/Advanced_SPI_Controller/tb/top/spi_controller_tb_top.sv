@@ -39,36 +39,40 @@ module spi_controller_tb_top;
         .CS_WIDTH(4)
     ) dut (
         // APB interface signals
-        .pclk(clk),
-        .presetn(rst_n),
-        .psel(apb_if_inst.psel),
-        .penable(apb_if_inst.penable),
-        .pwrite(apb_if_inst.pwrite),
-        .paddr(apb_if_inst.paddr),
-        .pwdata(apb_if_inst.pwdata),
-        .prdata(apb_if_inst.prdata),
-        .pready(apb_if_inst.pready),
-        .pslverr(apb_if_inst.pslverr),
+        .clk(clk),                   // Changed from pclk
+        .rst_n(rst_n),               // Changed from presetn
+        .apb_psel(apb_if_inst.psel),
+        .apb_penable(apb_if_inst.penable),
+        .apb_pwrite(apb_if_inst.pwrite),
+        .apb_paddr(apb_if_inst.paddr),
+        .apb_pwdata(apb_if_inst.pwdata),
+        .apb_prdata(apb_if_inst.prdata),
+        .apb_pready(apb_if_inst.pready),
+        .apb_pslverr(apb_if_inst.pslverr),
         
         // SPI interface signals
-        .spi_clk(spi_if_inst.spi_clk),
-        .spi_mosi(spi_if_inst.spi_mosi),
-        .spi_miso(spi_if_inst.spi_miso),
-        .spi_cs_n(spi_if_inst.spi_cs_n),
+        .spi_clk(spi_if_inst.sclk),
+        .spi_cs_n(spi_if_inst.cs_n),
+        .spi_mosi(spi_if_inst.mosi),
+        .spi_miso(spi_if_inst.miso),
         
-        // Interrupt
-        .spi_irq(spi_if_inst.spi_irq)
+        // Interrupt and DMA
+        .irq(spi_if_inst.spi_irq),
+        .dma_tx_req(),               // Not connected in testbench
+        .dma_rx_req(),               // Not connected in testbench
+        .dma_tx_ack(1'b0),           // Tied to inactive
+        .dma_rx_ack(1'b0)            // Tied to inactive
     );
     
     // Drive MISO from outside (slave response)
     // In a real system, this would be driven by an external SPI slave
     // For testing, we'll generate random data
     initial begin
-        spi_if_inst.spi_miso = 1'b0;
+        spi_if_inst.miso = 1'b0;
         forever begin
-            @(negedge spi_if_inst.spi_clk);
-            if (!spi_if_inst.spi_cs_n[0]) begin
-                spi_if_inst.spi_miso = $random;
+            @(negedge spi_if_inst.sclk);
+            if (!spi_if_inst.cs_n[0]) begin
+                spi_if_inst.miso = $random;
             end
         end
     end

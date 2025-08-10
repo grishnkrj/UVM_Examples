@@ -19,6 +19,7 @@ interface spi_if (input logic clk, input logic rst_n);
     
     // Control signals
     logic        spi_idle; // Indicates the SPI bus is idle
+    logic        spi_irq;  // SPI interrupt request signal
     
     // Define clocking blocks for synchronization
     // Driver clocking block
@@ -35,19 +36,22 @@ interface spi_if (input logic clk, input logic rst_n);
         input mosi;
         input miso;
         input cs_n;
+        input spi_irq;
     endclocking
     
     // Modport declarations
     modport DRIVER (
         clocking spi_drv_cb,
         input   rst_n,
-        output  spi_idle
+        output  spi_idle,
+        input   spi_irq
     );
     
     modport MONITOR (
         clocking spi_mon_cb,
         input   rst_n,
-        input   spi_idle
+        input   spi_idle,
+        input   spi_irq
     );
     
     // Helper tasks and functions
@@ -115,8 +119,10 @@ interface spi_if (input logic clk, input logic rst_n);
     initial begin
         sclk = 0;
         mosi = 0;
+        miso = 0;
         cs_n = 4'b1111;  // All CS lines inactive
         spi_idle = 1;    // Initially idle
+        spi_irq = 0;     // No interrupt initially
     end
 
 endinterface : spi_if
