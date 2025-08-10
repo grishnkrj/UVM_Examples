@@ -1,0 +1,38 @@
+// SPI Controller Coverage Configuration File
+// For use with Cadence Xcelium
+
+// Common settings for all metrics
+set_build_info -directory ./cov_work
+
+// Define coverage metrics to collect
+select_coverage -all -module advanced_spi_controller
+
+// Code coverage options
+set_toggle_scoring -module advanced_spi_controller
+set_toggle_scoring -sv -module advanced_spi_controller
+set_toggle_strobe 100ns
+
+// Line coverage options
+set_line_scoring -module advanced_spi_controller
+
+// Expression/condition coverage options
+set_expr_scoring -module advanced_spi_controller -both_edges
+
+// Branch/FSM coverage options
+set_branch_scoring -module advanced_spi_controller
+
+// Path coverage options
+set_path_scoring -module advanced_spi_controller
+
+// Functional coverage options
+set_functional_scoring -weight 2.0
+
+// Coverage filter options - exclude testbench modules
+deselect_coverage -all -module spi_controller_tb_top
+
+// Coverage thresholds for signoff
+set_coverage_goal -metrics all -goals 90.0
+
+// Specific coverage exclusions for known unreachable code
+// None for now, but add as needed using: 
+// exclude_coverage -block {advanced_spi_controller.reset_logic} -comment "Reset logic is never triggered in normal operation"
