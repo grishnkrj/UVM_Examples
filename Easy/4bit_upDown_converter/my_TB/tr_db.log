@@ -1,0 +1,3 @@
+  CREATE_STREAM @0 {NAME:rst_pkt T:Transactions SCOPE:uvm_test_top.my_env.my_agnt.my_seqr STREAM:3012}
+  CREATE_STREAM @5 {NAME:up_pkt T:Transactions SCOPE:uvm_test_top.my_env.my_agnt.my_seqr STREAM:3064}
+  CREATE_STREAM @175 {NAME:dw_pkt T:Transactions SCOPE:uvm_test_top.my_env.my_agnt.my_seqr STREAM:3102}
